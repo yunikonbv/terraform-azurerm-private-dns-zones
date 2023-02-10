@@ -41,14 +41,14 @@ steps:
     workingDirectory: /tmp
     targetType: inline
     script: |
-      version='${{ parameters.version }}'
+      version='${{ parameters.terraformVersion }}'
       if [[ "$(terraform --version)" == *"$version"* ]]
       then 
         echo "Terraform $version is already installed."
       else
         echo "Downloading Terraform $version"
         sudo apt update; sudo apt install zip -y
-        wget https://releases.hashicorp.com/terraform/${{ parameters.version }}/terraform_${{ parameters.version }}_linux_amd64.zip -O terraform.zip --quiet
+        wget https://releases.hashicorp.com/terraform/${{ parameters.terraformVersion }}/terraform_${{ parameters.terraformVersion }}_linux_amd64.zip -O terraform.zip --quiet
         echo "Unzipping Terraform $version"
         unzip -o terraform.zip
         echo "Installing Terraform $version"
