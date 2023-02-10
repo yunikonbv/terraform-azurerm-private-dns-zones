@@ -1,13 +1,13 @@
 # Test code for your Terraform module
 resource "azurerm_virtual_network" "main" {
-  name                = "bla"
+  name                = "test-terraform-azurerm-private-dns-zone"
   location            = "westeurope"
   resource_group_name = azurerm_resource_group.main.name
   address_space       = ["10.0.0.0/8"]
 }
 
 resource "azurerm_resource_group" "main" {
-  name     = "testjeeee"
+  name     = "test-terraform-azurerm-private-dns-zone"
   location = "westeurope"
 }
 
@@ -24,7 +24,7 @@ module "terraform-azurerm-private-dns-zone" {
         },
         {
           name                = "secondlink"
-          resource_group_name = "secondrg"
+          resource_group_name = azurerm_virtual_network.main.resource_group_name
           virtual_network_id  = azurerm_virtual_network.main.id
       }]
     }
