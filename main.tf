@@ -22,8 +22,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "main" {
 }
 
 locals {
-  # flatten ensures that this local value is a flat list of objects, rather
-  # than a list of lists of objects.
   zones_and_links = flatten([
     for dns_key, dns_value in var.private_dns_zones : [
       for link_key, link_value in dns_value.virtual_network_links : {
