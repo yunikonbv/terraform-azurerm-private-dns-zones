@@ -1,4 +1,4 @@
-# terraform-azurerm-private-dns-zone module
+# Terraform Module terraform-azurerm-private-dns-zone
 
 <a name="readme-top"></a>
 
@@ -23,7 +23,7 @@
 </details>
 
 ## About The Project
-Terraform module.
+Terraform module for creating Private DNS Zones and Virtual Network links.
 
 ## Getting Started
 To get a local copy up and running, follow these simple example steps.
@@ -70,7 +70,9 @@ To get a local copy up and running, follow these simple example steps.
   ```
 
 ## Usage
-_For more examples, please refer to the documentation._
+[//]: # (BEGIN_TF_DOCS)
+
+[//]: # (END_TF_DOCS)
 
 ## Roadmap
 - [x] Add Changelog

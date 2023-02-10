@@ -8,7 +8,8 @@ variable "private_dns_zones" {
       virtual_network_id  = string
     }))
   }))
-  default = null
+  default     = null
+  description = "A map of variables to add Private DNS Zones and their respective Virtual Network links."
 }
 
 locals {}

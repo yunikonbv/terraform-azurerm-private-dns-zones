@@ -7,18 +7,14 @@ resource "azurerm_private_dns_zone" "private_dns_zones" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "main" {
-  for_each = {
+  for_each = azurerm_private_dns_zone.private_dns_zones != null ? {
     for zone in local.zones_and_links : "${zone.dns_key}.${zone.link_key}" => zone
-  }
+  } : {}
 
   name                  = each.value.name
   resource_group_name   = each.value.resource_group_name
   private_dns_zone_name = replace(each.key, "/\\.[^.]*$/", "")
   virtual_network_id    = each.value.virtual_network_id
-
-  depends_on = [
-    azurerm_private_dns_zone.private_dns_zones
-  ]
 }
 
 locals {
