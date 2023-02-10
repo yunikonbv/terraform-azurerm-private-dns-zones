@@ -1,0 +1,77 @@
+trigger: 
+  - master
+
+parameters:
+- name: terraformVersion
+  displayName: "Terraform version:"
+  type: string
+  default: "1.3.7"
+
+- name: goVersion
+  displayName: "Go version:"
+  type: string
+  default: "1.19.5"
+
+# Create a Service Connection in your Azure DevOps project
+# Use the name of that Service Connection here
+- name: serviceConnection
+  displayName: "Azure DevOps Service Connection:"
+  type: string
+  default: 'AzureRM'
+
+- name: workingDirectory
+  displayName: "Working directory:"
+  type: string
+  default: "./test"
+
+# Edit the 'pool' key to use self-hosted agents
+# i.e: pool: MyFavoriteAgent
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps: 
+- task: GoTool@0
+  displayName: 'Install Go ${{ parameters.goVersion }}'
+  inputs:
+    version: ${{ parameters.goVersion }}
+
+- task: Bash@3
+  displayName: 'Use Terraform ${{ parameters.terraformVersion }}'
+  inputs:
+    workingDirectory: /tmp
+    targetType: inline
+    script: |
+      version='${{ parameters.version }}'
+      if [[ "$(terraform --version)" == *"$version"* ]]
+      then 
+        echo "Terraform $version is already installed."
+      else
+        echo "Downloading Terraform $version"
+        sudo apt update; sudo apt install zip -y
+        wget https://releases.hashicorp.com/terraform/${{ parameters.version }}/terraform_${{ parameters.version }}_linux_amd64.zip -O terraform.zip --quiet
+        echo "Unzipping Terraform $version"
+        unzip -o terraform.zip
+        echo "Installing Terraform $version"
+        sudo mv terraform /usr/local/bin/
+      fi
+      echo "Using $(terraform --version)"
+
+# Converts the service connection to environment variables, 
+# because Terraform won't find the subscription otherwise.
+- task: AzureCLI@2
+  displayName: Run Terratest
+  inputs:
+    scriptType: bash
+    scriptLocation: inlineScript
+    azureSubscription: '${{ parameters.serviceConnection }}'
+    addSpnToEnvironment: true
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    inlineScript: |
+      export ARM_CLIENT_ID=$servicePrincipalId
+      export ARM_CLIENT_SECRET=$servicePrincipalKey
+      export ARM_SUBSCRIPTION_ID=$(az account show --query id | xargs)
+      export ARM_TENANT_ID=$(az account show --query tenantId | xargs)
+      echo "Authorizing to Azure Subscription $(az account show --query id | xargs) with Service Principal $servicePrincipalId"
+
+      go mod init workaround
+      go test -v

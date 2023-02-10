@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+    - main
+    - master
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: terraformDocsVersion
+  displayName: "terraform-docs version:"
+  type: string
+  default: "0.16.0"
+
+- name: branchToPush
+  displayName: "Push to branch:"
+  type: string
+  default: "main"
+
+steps:
+- checkout: self
+  persistCredentials: "true"
+
+- task: Bash@3
+  displayName: Configure git
+  inputs:
+    targetType: inline
+    script: |
+      git config --global user.email pipeline@azure.com
+      git config --global user.name "Azure DevOps Pipeline"
+
+- task: Bash@3
+  displayName: Install terraform-docs
+  inputs:
+    workingDirectory: /tmp
+    targetType: inline
+    script: |
+      curl -sSLo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v${{ parameters.terraformDocsVersion }}/terraform-docs-v${{ parameters.terraformDocsVersion }}-linux-amd64.tar.gz
+      tar -xzf terraform-docs.tar.gz terraform-docs
+      chmod +x terraform-docs
+      mv terraform-docs /usr/local/bin/
+
+- task: Bash@3
+  displayName: Push README.md with terraform-docs to git
+  inputs:
+    targetType: inline
+    script: |
+      git checkout -b ${{ parameters.branchToPush }}
+      terraform-docs --config .terraform-docs.yml .
+      git add README.md
+      echo "##vso[task.uploadsummary]$(Build.Repository.LocalPath)/README.md"
+      git commit -m "Adding terraform docs in build $(Build.BuildNumber)"
+      git push --set-upstream origin ${{ parameters.branchToPush }}
