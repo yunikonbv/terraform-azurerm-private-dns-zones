@@ -75,5 +75,5 @@ steps:
 
       go mod init
       go mod tidy
-      go build terraform-azurerm-aks_test.go
+      go build terraform-azurerm-private-dns-zone_test.go
       go test -timeout 60m -v
