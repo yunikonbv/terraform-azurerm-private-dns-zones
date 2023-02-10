@@ -73,5 +73,7 @@ steps:
       export ARM_TENANT_ID=$(az account show --query tenantId | xargs)
       echo "Authorizing to Azure Subscription $(az account show --query id | xargs) with Service Principal $servicePrincipalId"
 
-      go mod init workaround
-      go test -v
+      go mod init
+      go mod tidy
+      go build terraform-azurerm-aks_test.go
+      go test -timeout 60m -v
