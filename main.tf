@@ -15,6 +15,10 @@ resource "azurerm_private_dns_zone_virtual_network_link" "main" {
   resource_group_name   = each.value.resource_group_name
   private_dns_zone_name = replace(each.key, "/\\.[^.]*$/", "")
   virtual_network_id    = each.value.virtual_network_id
+
+  depends_on = [
+    azurerm_private_dns_zone.private_dns_zones
+  ]
 }
 
 locals {
