@@ -1,5 +1,4 @@
 # List of outputs
-output "name" {
-  value       = var.name
-  description = "Name of the resource."
+output "private_dns_zones" {
+  value = var.private_dns_zones
 }

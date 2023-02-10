@@ -18,6 +18,6 @@ func TestNameOutput(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the values of output variables and check they have the expected values.
-	output := terraform.Output(t, terraformOptions, "terraform-azurerm-private-dns-zone_name")
+	output := terraform.Output(t, terraformOptions, "private_dns_zones")
 	assert.NotEmpty(t, output)
 }
