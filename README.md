@@ -1,4 +1,4 @@
-# Terraform Module terraform-azurerm-private-dns-zone
+# Terraform Module terraform-azurerm-private-dns-zones
 
 <a name="readme-top"></a>
 
@@ -56,12 +56,12 @@ To get a local copy up and running, follow these simple example steps.
   ```
 3. Clone the repo
   ```sh
-  git clone https://github.com/yunikon-nl/terraform-azurerm-private-dns-zone.git modules/
+  git clone https://github.com/yunikon-nl/terraform-azurerm-private-dns-zones.git modules/
   ```
 4. Include this module in your Terraform code from the source
   ```hcl
   module {
-    source = "modules/terraform-azurerm-private-dns-zone"
+    source = "modules/terraform-azurerm-private-dns-zones"
   }
   ```
 5. Initialize your project to test the module
@@ -115,7 +115,7 @@ No modules.
 - [x] Add License
 - [ ] Do something else
 
-See the [open issues](https://github.com/yunikon-nl/terraform-azurerm-private-dns-zone/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/yunikon-nl/terraform-azurerm-private-dns-zones/issues) for a full list of proposed features (and known issues).
 
 ## Contributing
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -139,7 +139,4 @@ This code base is owned by Yunikon.
 * Email: [code@yunikon.nl](mailto:code@yunikon.nl)
 
 
-Project Link: [yunikon-nl/terraform-azurerm-private-dns-zone](https://github.com/yunikon-nl/terraform-azurerm-private-dns-zone)
-
-
-## Acknowledgments
+Project Link: [yunikon-nl/terraform-azurerm-private-dns-zones](https://github.com/yunikon-nl/terraform-azurerm-private-dns-zones)
